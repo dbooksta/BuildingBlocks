@@ -105,7 +105,7 @@
 
     <script type="text/x-handlebars" data-template-name="brokerageAccounts">
       <h4>
-        {{brokerageAccounts.length}} linked accounts
+        {{this.length}} linked accounts
         <button id="add-account" type="button" class="btn btn-default" {{action "addAccount"}}>
           Add Account
         </button>
@@ -121,28 +121,27 @@
         <label>Account Number</label>
         {{input value=newAccountNumber}}
 
+        <button {{action "addNewAccount"}}> Add New Account </button>
       </div>
 
-      <button {{action "addNewAccount"}}> Add New Account </button>
-    </script>
 
-    <script type="text/x-handlebars" data-template-name="portfolio">
       <div class="list-group">
-        {{#each account in this.brokerageAccounts}}
+        {{#each account in this}}
           <a class="list-group-item">
           {{account.financialInstitution}}
           </a>
         {{/each}}
-      </div>          
+      </div>      
+    </script>
 
+    <script type="text/x-handlebars" data-template-name="portfolio">  
       <h4>
-        {{portfolio.blocks.length}} blocks
+        {{this.blocks.length}} blocks
         <button id="add-block" type="button" class="btn btn-default" {{action "addBlock"}}>
           Add Block
         </button>
       </h4>
 
-    <script type="text/x-handlebars" data-template-name="portfolio">
       <table class="table table-hover">
         <thead>
           <tr>

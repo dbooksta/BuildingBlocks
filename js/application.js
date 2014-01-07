@@ -49,10 +49,14 @@ App.PortfolioController = Ember.ObjectController.extend();
 App.BlockController = Ember.ArrayController.extend();
 App.SecurityController = Ember.ArrayController.extend();
 App.PositionController = Ember.ArrayController.extend();
-App.BrokerageAccountsController = Ember.ArrayController.extend();
+App.UserController = Ember.ObjectController.extend();
 
-App.UserController = Ember.ObjectController.extend({
+App.BrokerageAccountsController = Ember.ArrayController.extend({
 	actions: {
+		addAccount: function(){
+			this.toggleProperty('addAccountMode');
+		},
+
 		addNewAccount: function(){
 
 			var newAccount = this.store.createRecord('brokerageAccount', {
@@ -60,14 +64,11 @@ App.UserController = Ember.ObjectController.extend({
 				accountType: this.get('newAccountType'),
 				accountNumber: this.get('accountNumber')				
 			});
-
-			var user = this.get('model');
-			{{debugger}}
-			user.brokerageAccounts.pushObject(newAccount);
-			user.save();
+			this.pushObject(newAccount);
 		}
-	}
+	}	
 });
+
 
 App.UsersCreateController = Ember.ObjectController.extend({
 	actions:{
@@ -78,12 +79,6 @@ App.UsersCreateController = Ember.ObjectController.extend({
 			newUser.save();
 
 			this.transitionToRoute('user', newUser);
-		},
-		addAccount: function(){
-			this.toggleProperty('addAccountMode');
-		},
-		confirmAddAccount: function(){
-			this.get('model').brokerageAccounts.add
 		}
 	}
 });
