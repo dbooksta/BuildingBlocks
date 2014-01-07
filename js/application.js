@@ -52,12 +52,14 @@ App.PositionController = Ember.ArrayController.extend();
 App.UserController = Ember.ObjectController.extend();
 
 App.BrokerageAccountsController = Ember.ArrayController.extend({
+	addAccountMode: false,
+
 	actions: {
 		addAccount: function(){
-			this.toggleProperty('addAccountMode');
+			this.toggleAccount();
 		},
 
-		addNewAccount: function(){
+		confirmNewAccount: function(){
 
 			var newAccount = this.store.createRecord('brokerageAccount', {
 				financialInstitution: this.get('newFinancialInstitution'),
@@ -65,8 +67,20 @@ App.BrokerageAccountsController = Ember.ArrayController.extend({
 				accountNumber: this.get('accountNumber')				
 			});
 			this.pushObject(newAccount);
+			this.toggleAccount();
+		},
+
+		cancelNewAccount: function(){
+			this.toggleAccount();
 		}
-	}	
+	},
+
+	toggleAccount: function(){
+		this.set('newAccountType', null);
+		this.set('newFinancialInstitution', null);
+		this.set('newAccountNumber', null);
+		this.toggleProperty('addAccountMode');
+	}
 });
 
 

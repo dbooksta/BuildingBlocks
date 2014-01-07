@@ -111,18 +111,21 @@
         </button>
       </h4>
 
-      <div>
-        <label>Financial Institution</label>
-        {{input type="text" value=newFinancialInstitution}}
+      {{#if addAccountMode}}
+        <div>
+          <label>Financial Institution</label>
+          {{input type="text" value=newFinancialInstitution}}
 
-        <label>Account Type</label>
-        {{input value=newAccountType}}
+          <label>Account Type</label>
+          {{input value=newAccountType}}
 
-        <label>Account Number</label>
-        {{input value=newAccountNumber}}
+          <label>Account Number</label>
+          {{input value=newAccountNumber}}
 
-        <button {{action "addNewAccount"}}> Add New Account </button>
-      </div>
+          <button {{action "confirmNewAccount"}}> Add </button>
+          <button {{action "cancelNewAccount"}}> Cancel </button>
+        </div>
+      {{/if}}
 
 
       <div class="list-group">
