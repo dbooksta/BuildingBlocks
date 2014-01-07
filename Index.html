@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Dan Bookstaber">
+    <link rel="shortcut icon" href="docs-assets/ico/favicon.png">
+
+    <title>Building Blocks</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/building-blocks.css" rel="stylesheet">
+
+      <!-- javascript -->
+  <script src="js/handlebars.js"></script>
+  <script src="js/jquery-1.10.2.min.js"></script>
+  <script src="js/ember.js"></script>
+  <script src="js/ember-data.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/application.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/x-handlebars" data-template-name="application">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Building Blocks</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right" role="form">
+              <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+
+      {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="users">
+      <div class = "row">
+
+        <div class = "col-md-2">
+          <h4>Users
+            {{#link-to "users.create" class="btn btn-default"}}
+              Add User
+            {{/link-to}}
+          </h4>               
+          <div class="list-group">
+            {{#each}}
+              {{#linkTo "user" this class="list-group-item inactive"}}
+                {{name}} 
+              {{/linkTo}}
+            {{/each}}
+          </div>          
+        </div>
+
+        <div class = "col-md-6">
+          {{outlet}}
+        </div>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="users/index">
+      <h3>Please select a user</h3>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Accounts</div>
+        <!-- Table -->
+        {{render "brokerageAccounts" brokerageAccounts}}
+      </div>
+
+
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Portfolio</div>
+        <!-- Table -->
+        {{render "portfolio" portfolio}}
+      </div>
+
+      {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="brokerageAccounts">
+      <h4>
+        {{brokerageAccounts.length}} linked accounts
+        <button id="add-account" type="button" class="btn btn-default" {{action "addAccount"}}>
+          Add Account
+        </button>
+      </h4>
+
+      <div>
+        <label>Financial Institution</label>
+        {{input type="text" value=newFinancialInstitution}}
+
+        <label>Account Type</label>
+        {{input value=newAccountType}}
+
+        <label>Account Number</label>
+        {{input value=newAccountNumber}}
+
+      </div>
+
+      <button {{action "addNewAccount"}}> Add New Account </button>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="portfolio">
+      <div class="list-group">
+        {{#each account in this.brokerageAccounts}}
+          <a class="list-group-item">
+          {{account.financialInstitution}}
+          </a>
+        {{/each}}
+      </div>          
+
+      <h4>
+        {{portfolio.blocks.length}} blocks
+        <button id="add-block" type="button" class="btn btn-default" {{action "addBlock"}}>
+          Add Block
+        </button>
+      </h4>
+
+    <script type="text/x-handlebars" data-template-name="portfolio">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Current</th>
+            <th>Target</th>
+            <th>Diff</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each block in blocks}}
+            <tr class="success">
+              <td>{{block.strategy}}, {{block.universe}}</td>
+              <td></td>
+              <td>{{formatCurrency block.currentVal}}</td>
+              <td>{{formatCurrency block.targetVal}}</td>
+              <td>{{formatCurrency block.diffVal}}</td>
+            </tr>
+            {{#each position in block.positions}}
+              <tr>
+                <td>{{position.security.name}}</td>
+                <td>{{formatCurrency position.security.price}}</td>
+                <td>{{formatCurrency position.currentVal}}</td>
+                <td>{{formatCurrency position.targetVal}}</td>
+                <td>{{formatCurrency position.diffVal}}</td>
+              </tr>
+            {{/each}}
+          {{/each}}
+        </tbody>
+      </table>
+
+      {{outlet}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user/edit">
+      <div>
+        <label>User name</label>
+        {{input value=name}}
+      </div>
+
+      <button {{action "save"}}> ok </button>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user/addAccount">
+      <div>
+        {{controller}}
+        <label>Financial Institution</label>
+        {{input type="text" value=newFinancialInstitution}}
+
+        <label>Account Type</label>
+        {{input value=newAccountType}}
+
+        <label>Account Number</label>
+        {{input value=newAccountNumber}}
+
+      </div>
+
+      <button {{action "addNewAccount"}}> ok </button>
+    </script>
+
+
+   </body>
+</html>

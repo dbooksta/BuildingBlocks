@@ -1,0 +1,7 @@
+.table-block > tbody > tr > td {
+  font-weight: bold;
+}
+
+.table-position > tbody > tr > td {
+  padding: 5px;
+}
